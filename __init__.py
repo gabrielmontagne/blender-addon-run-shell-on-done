@@ -48,8 +48,6 @@ class SCENE_PT_run_on_done(Panel):
 
 def register():
 
-    print('REGISTREMESTA')
-
     Scene.done_reference_path = StringProperty(
         name = "Done  folder context",
         default = "//",
@@ -63,9 +61,6 @@ def register():
     )
 
     bpy.utils.register_class(SCENE_PT_run_on_done)
-
-    # TODO remove me
-    bpy.app.handlers.render_complete.clear()
     bpy.app.handlers.render_complete.append(handle_finished)
 
 def unregister():
