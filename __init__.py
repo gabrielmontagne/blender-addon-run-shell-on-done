@@ -2,6 +2,8 @@ import bpy
 from bpy.app.handlers import persistent
 from bpy.props import StringProperty
 from bpy.types import Scene, Panel
+from shlex import split
+import subprocess
 
 bl_info = {
     'name': "Run on done",
@@ -12,10 +14,15 @@ bl_info = {
 
 @persistent
 def handle_finished(scene):
-    context = scene.done_reference_path
     command = scene.done_command
+    context = scene.done_reference_path
 
-    print('Render finished', context, command)
+    if not command:
+        return
+
+    args = split(command)
+
+    print('Render finished', context, split(command))
 
 class SCENE_PT_run_on_done(Panel):
     """Scene panel for config run on done."""
