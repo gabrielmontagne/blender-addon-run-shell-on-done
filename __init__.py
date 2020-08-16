@@ -56,7 +56,7 @@ def register():
 
     Scene.done_command = StringProperty(
         name = "Done  shell command",
-        default = "make",
+        default = "",
         description = "Command to run on ' done'"
     )
 
