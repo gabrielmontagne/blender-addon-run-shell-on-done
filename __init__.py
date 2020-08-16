@@ -11,8 +11,11 @@ bl_info = {
 }
 
 @persistent
-def handle_still_finished(scene):
-    print('still finished', scene)
+def handle_finished(scene):
+    context = scene.done_reference_path
+    command = scene.done_command
+
+    print('Render finished', context, command)
 
 class SCENE_PT_run_on_done(Panel):
     """Scene panel for config run on done."""
@@ -52,11 +55,11 @@ def register():
 
     # TODO remove me
     bpy.app.handlers.render_complete.clear()
-    bpy.app.handlers.render_complete.append(handle_still_finished)
+    bpy.app.handlers.render_complete.append(handle_finished)
 
 def unregister():
     bpy.utils.unregister_class(SCENE_PT_run_on_done)
-    bpy.app.handlers.render_complete.remove(handle_still_finished)
+    bpy.app.handlers.render_complete.remove(handle_finished)
 
 
 if __name__ == '__main__':
