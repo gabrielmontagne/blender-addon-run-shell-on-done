@@ -3,6 +3,7 @@ from bpy.app.handlers import persistent
 from bpy.props import StringProperty
 from bpy.types import Scene, Panel
 from shlex import split
+from bpy.path import abspath
 import subprocess
 
 bl_info = {
@@ -15,16 +16,16 @@ bl_info = {
 @persistent
 def handle_finished(scene):
     command = scene.done_command
-    context = scene.done_reference_path
+    cwd = scene.done_reference_path
 
     if not command:
         return
 
     args = split(command)
     try:
-        result = subprocess.run(args)
+        result = subprocess.run(args, cwd=abspath(cwd))
     except Exception as e:
-        print("Couldn't run command", command)
+        print("Couldn't run command", command, "on", cwd)
 
 class SCENE_PT_run_on_done(Panel):
     """Scene panel for config run on done."""
@@ -40,6 +41,7 @@ class SCENE_PT_run_on_done(Panel):
 
         row = layout.row()
         row.prop(context.scene, "done_reference_path")
+        row = layout.row()
         row.prop(context.scene, "done_command")
 
         row = layout.row()
