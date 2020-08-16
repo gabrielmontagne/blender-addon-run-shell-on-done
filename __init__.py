@@ -21,8 +21,10 @@ def handle_finished(scene):
         return
 
     args = split(command)
-
-    print('Render finished', context, split(command))
+    try:
+        result = subprocess.run(args)
+    except Exception as e:
+        print("Couldn't run command", command)
 
 class SCENE_PT_run_on_done(Panel):
     """Scene panel for config run on done."""
